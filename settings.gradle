@@ -1,0 +1,3 @@
+include ':PdfFileHelper'
+include ':app'
+rootProject.name = "PdfFilePrintHelper"
