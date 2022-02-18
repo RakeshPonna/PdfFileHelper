@@ -14,12 +14,36 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        Signature {
+            def props = new Properties()
+            props.load(new FileInputStream(file("signing.properties")))
+            keyAlias props['keyAlias']
+            keyPassword props['keyAliasPassword']
+            storeFile file(props['keyStore'])
+            storePassword props['keyStorePassword']
+        }
+    }
 
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.Signature
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled true
+            //ext.enableCrashlytics = false
+            testCoverageEnabled = true
+        }
+    }
+    lintOptions {
+        disable 'LongLogTag'
+        quiet true
+        //textReport true
+        ignoreWarnings false
+        abortOnError false
     }
 }
 
